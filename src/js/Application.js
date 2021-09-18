@@ -15,11 +15,9 @@ export default class Application extends EventEmitter {
     let count = 0;
 
     this._beat = new Beat();
-    _beat.addListener(Beat.events.BIT, () => {
-      this._create(lyrics, count++);
-      if(count > 5) {
-        _beat.removeListener(Beat.events.BIT)
-      }
+    this._beat.on(Beat.events.BIT, () => {
+      this._create(lyrics, count);
+      count = (count + 1) % lyrics.length
     })
     
     this.emit(Application.events.READY);
